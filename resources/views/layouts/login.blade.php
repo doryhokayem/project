@@ -1,0 +1,1 @@
+<input id="email" type="text" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
