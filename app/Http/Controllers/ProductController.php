@@ -6,6 +6,7 @@ use App\Http\Requests\ProductRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Mail\NewProduct;
+use App\Events\EmailEvent;
 use App\Category;
 use App\Product;
 use App\User;
@@ -24,9 +25,14 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $products = DB::table('products')->simplePaginate(5);
+
+        $q= $request->has('q')? $request->q : '';
+        $products =Product::where('name','LIKE','%'.$q.'%')->paginate(5);
+        
+      
+  
         return view('products.index')->with('products', $products);
     }
 
@@ -49,12 +55,7 @@ class ProductController extends Controller
      */
     public function store(ProductRequest $request)
     {
-        $this->validate($request,[
-            'name'=>'required',
-            'price'=>'required',
-            // 'active'=>'required'
-         ]);
- 
+    
          $product = new Product();
  
          $product ->name = $request->input('name');
@@ -68,18 +69,9 @@ class ProductController extends Controller
          $product ->categories_id=1;
           
          $product ->save();
-
-         $currentUser=Auth::user();
-         $users=User::all();
-
-         foreach($users as $user)
-         {  
-            if($currentUser->email != $user->email)
-            {
-                \Mail::to($user->email)->send(new NewProduct);
-            }
-         }
-     
+ 
+         
+        event(new EmailEvent());
         if($product->save())
             return redirect('/products');
         return redirect()->back()

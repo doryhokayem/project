@@ -23,4 +23,3 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('logout', array('uses' => 'HomeController@doLogout'));
 
-Route::any('/search','SearchController@index');

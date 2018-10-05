@@ -32,7 +32,7 @@
             <div class="col-12 col-sm-12 col-md-12 col-lg-12">
                 <a href="/products/create">+ New Product</a>
                 <div class="table-responsive">
-                <form action="/search" method="POST" role="search">
+                <form action="/products" method="GET" role="search">
                                 @csrf
                                 <div class="input-group">
                                     <input type="text" class="form-control" 
@@ -81,12 +81,7 @@
                             @endforeach
                         </tbody>
                     </table>
-                        <div class="container">
-                            @foreach ($products as $product)
-                                {{ $product->id }}
-                            @endforeach
-                        </div>
-                        {{ $products->links() }}
+                    {{ $products->links() }}
                 </div>
             </div>
         </div>

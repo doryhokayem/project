@@ -14,11 +14,11 @@ class EventServiceProvider extends ServiceProvider
      *
      * @var array
      */
-    protected $listen = [
-        Registered::class => [
-            SendEmailVerificationNotification::class,
-        ],
-    ];
+    protected $listen =  [
+        'App\Events\EmailEvent' => [
+        'App\Listeners\SendMail',
+    ],
+];
 
     /**
      * Register any events for your application.
@@ -29,6 +29,13 @@ class EventServiceProvider extends ServiceProvider
     {
         parent::boot();
 
-        //
+        // Event::listen('event.name', function ($foo, $bar) {
+            
+        //     $users=User::all();
+         
+        //     $array = array_pluck($users, 'email');
+        //     Mail::to($user->email)->send(new NewProduct);
+            
+        // });
     }
 }

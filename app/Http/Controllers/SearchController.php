@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Search;
-use App\Product;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Http\Request;
+use App\Product;
+use App\Search;
 
 class SearchController extends Controller
 {
@@ -14,13 +14,14 @@ class SearchController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $q = Input::get ( 'q' );
+         
+        $q= $request->get('q');
         $products =Product::where('name','LIKE','%'.$q.'%')->get();
         if(count($products) > 0)
             return view('products.search')->withDetails($products)->withQuery ( $q );
-        else return view ('products.search')->withMessage('No Details found. Try to search again !');
+      
          
     }
 
